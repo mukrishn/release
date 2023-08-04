@@ -213,6 +213,29 @@ tests:
     test:
     - ref: openshift-qe-ingress-perf
     workflow: rosa-aws-sts
+- as: perfscale-rosa-hcp-3zones-ingress-perf-3nodes-periodic
+  cron: 0 7 * * 2
+  steps:
+    cluster_profile: aws-perfscale-qe
+    env:
+      CHANNEL_GROUP: nightly
+      COMPUTE_MACHINE_TYPE: m5.2xlarge
+      DISABLE_WORKLOAD_MONITORING: "false"
+      ENABLE_AUTOSCALING: "false"
+      HOSTED_CP: "true"
+      INFRA_MACHINE_TYPE: c5.4xlarge
+      INFRA_NAME: infra
+      INFRA_NODE_LABELS: node-role.kubernetes.io/infra=
+      INFRA_NODE_TAINTS: node-role.kubernetes.io/infra=:NoSchedule
+      INFRA_REPLICAS: "2"
+      MULTI_AZ: "true"
+      OPENSHIFT_VERSION: "4.13"
+      READY_WAIT_TIMEOUT: 30m
+      REPLICAS: "3"
+      ZONES_COUNT: "3"
+    test:
+    - ref: openshift-qe-ingress-perf
+    workflow: rosa-aws-sts-hypershift    
 zz_generated_metadata:
   branch: main
   org: openshift-qe

@@ -1,0 +1,40 @@
+ref:
+  as: rosa-sts-cluster-machinepool
+  from_image:
+    namespace: ci
+    name: rosa-aws-cli
+    tag: latest
+  grace_period: 10m
+  commands: rosa-sts-cluster-machinepool-commands.sh
+  resources:
+    requests:
+      cpu: 100m
+      memory: 300Mi
+  timeout: 2h0m0s
+  env:
+  - name: ROSA_LOGIN_ENV
+    default: "staging"
+    documentation: The environment for rosa login. The supported values are [production, staging].
+  - name: REGION
+    default: ""
+    documentation: Use a specific AWS region, overriding the LEASED_RESOURCE environment variable in the cluster_profile.
+  - name: HOSTED_CP
+    default: "false"
+    documentation: Enable the use of hosted control planes (HyperShift).        
+  - name: INFRA_NAME
+    default: ""
+    documentation: The name of the infra machinepool. It is valid only if HOSTED_CP is set to true.
+  - name: INFRA_MACHINE_TYPE
+    default: ""
+    documentation: The instance size for Hypershift Infra nodes. It is valid only if HOSTED_CP is set to true.
+  - name: INFRA_REPLICAS
+    default: ""
+    documentation: Number of Infra nodes to provision. It is valid only if HOSTED_CP is set to true.
+  - name: INFRA_NODE_LABELS
+    default: ""
+    documentation: Labels to be added on the infra nodes, it is valid only if HOSTED_CP is set to true. Format should be a comma-separated list of 'key=value'.
+  - name: INFRA_NODE_TAINTS
+    default: ""
+    documentation: Taints to be applied on the infra nodes. It is valid only if HOSTED_CP is set to true. Format should be a comma-separated list of 'key=value:ScheduleType'
+  documentation: |-
+    Using rosa cli to create a machinepool in an existing rosa cluster
